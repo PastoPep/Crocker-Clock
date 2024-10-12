@@ -1,15 +1,20 @@
 // Java Swing Program to demonstrate
 // a simple JFrame
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-
 // Driver Class
-public class CrockerClockFrame {
+public class CrockerClockFrame implements ActionListener{
+	private int time = 5; 
+	private JLabel clocky;
 
 	// Create a new JFrame
 	public CrockerClockFrame() {
@@ -17,13 +22,15 @@ public class CrockerClockFrame {
 	JFrame frame = new JFrame("Crocker's Clock"); //creates the full program, and the entire box as a whole
 
 	JButton StartButton = new JButton("Start");
+	StartButton.addActionListener(this);
+
 	JButton StawpButton = new JButton("Stop");//add buttons
 
 
 	// StartButton.setPreferredSize(new Dimension(300, 300));
 	// StawpButton.setPreferredSize(new Dimension(300, 300));
 
-	JLabel clocky = new JLabel("test");//puts word down
+	clocky = new JLabel();//puts word down
 
 	JPanel ClockFrame = new JPanel(); //create frame in place inside panel
 	JPanel buttonFrame = new JPanel(); //create frame in place inside panel
@@ -42,22 +49,58 @@ public class CrockerClockFrame {
 	buttonFrame.add(StawpButton);
 	
 
-	frame.add(panel,BorderLayout.CENTER);
+	frame.add(panel,BorderLayout.CENTER);//main frame
 	frame.pack();
 	frame.setVisible(true);
 
-	frame.add(panel,BorderLayout.CENTER);
+	frame.add(panel,BorderLayout.CENTER);//addings panel with button and text to main frame
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setTitle("Crocker's Clock");
 	frame.pack();
 	frame.setVisible(true);
 	}
 
+	//color
+
 	public static void main(String[] args) {
-		new CrockerClockFrame();
+		new CrockerClockFrame();//calls the method to opent he frame
+
 
 	}
+
+    @Override
+    public void actionPerformed(ActionEvent e) { //start button to start countdown
+		clocky.setText(""+time);//puts word down
+        updateClocky();
+
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+	
+	public void updateClocky() { //the code to update the timer to countdown
+
+		Timer timerObj = new Timer();
+		TimerTask timerTaskObj;
+            timerTaskObj = new TimerTask() {
+                public void run() {
+
+					if(time <=-1) {
+						time = 0;
+						timerObj.cancel();
+					} else {
+						clocky.setText(""+time);//puts word down
+						time--;
+					}
+					
+                }
+            };
+
+timerObj.schedule(timerTaskObj, 0, 1000);//delays in ms
+
+	}	
+
+
 }
+
 
 /* OLD CODE
 

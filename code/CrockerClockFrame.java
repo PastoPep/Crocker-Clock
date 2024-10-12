@@ -14,6 +14,9 @@ import javax.swing.border.Border;
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
 	private int time = 5; 
+	private int OGtime = time+0; 
+	Timer ClockDown;
+
 	private JLabel clocky;
 
 	// Create a new JFrame
@@ -25,6 +28,10 @@ public class CrockerClockFrame implements ActionListener{
 	StartButton.addActionListener(this);
 
 	JButton StawpButton = new JButton("Stop");//add buttons
+	StawpButton.addActionListener(this);
+
+	JButton ResetButtons = new JButton("Reset");//add buttons
+	ResetButtons.addActionListener(this);
 
 
 	// StartButton.setPreferredSize(new Dimension(300, 300));
@@ -45,8 +52,9 @@ public class CrockerClockFrame implements ActionListener{
 	panel.add(ClockFrame,BorderLayout.CENTER);//adds the clock frame where the timer will be
 	ClockFrame.add(clocky,BorderLayout.CENTER);//temp text will be timer later
 	panel.add(buttonFrame,BorderLayout.CENTER);//adds the button frame
-	buttonFrame.add(StartButton);//adds both buttons
+	buttonFrame.add(StartButton);//adds the buttons
 	buttonFrame.add(StawpButton);
+	buttonFrame.add(ResetButtons);
 	
 
 	frame.add(panel,BorderLayout.CENTER);//main frame
@@ -70,22 +78,33 @@ public class CrockerClockFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) { //start button to start countdown
+		if(e.getActionCommand().equals("Start")){
+		System.out.print(e);
 		clocky.setText(""+time);//puts word down
-        updateClocky();
+        ClockDown = updateClocky();
 
         throw new UnsupportedOperationException("Not supported yet.");
-    }
+    } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
+		ClockDown.cancel();
+	} else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
+		time = 0;
+		ClockDown.cancel();
+		time = OGtime;
+		clocky.setText(""+time);//puts word down
+		
+	}
+}
 	
-	public void updateClocky() { //the code to update the timer to countdown
+	public Timer updateClocky() { //the code to update the timer to countdown
 
-		Timer timerObj = new Timer();
+		ClockDown = new Timer();
 		TimerTask timerTaskObj;
             timerTaskObj = new TimerTask() {
                 public void run() {
 
 					if(time <=-1) {
 						time = 0;
-						timerObj.cancel();
+						ClockDown.cancel(); // stops clock
 					} else {
 						clocky.setText(""+time);//puts word down
 						time--;
@@ -94,52 +113,9 @@ public class CrockerClockFrame implements ActionListener{
                 }
             };
 
-timerObj.schedule(timerTaskObj, 0, 1000);//delays in ms
-
+			ClockDown.schedule(timerTaskObj, 0, 1000);//delays in ms
+			return ClockDown;
 	}	
 
 
 }
-
-
-/* OLD CODE
-
-		
-		// Create a new JFrame
-		JFrame frame = new JFrame("Crocker's Clock"); //creates the full program, and the entire box as a whole
-		// Set frame properties
-		frame.setSize(500,350); // Set the size of the frame
-
-		
-		JInternalFrame jClockInternalFrame=new JInternalFrame(); //creates the inner box where the display clock will be
-		jClockInternalFrame.setPreferredSize(new Dimension(200, 250));
-        jClockInternalFrame.setLocation(50, 50);
-        jClockInternalFrame.setSize(10, 5);
-        jClockInternalFrame.setTitle("Crocker Clock");
-        jClockInternalFrame.setVisible(true);
-        jClockInternalFrame.setClosable(true);
-        jClockInternalFrame.setResizable(true);
-		jClockInternalFrame.pack();
-
-		JLabel label
-			= new JLabel("Clock For Crocker", SwingConstants.CENTER);
-			jClockInternalFrame.add(label); //adds the text to the mid of the internal layer
-		
-
-        frame.add(jClockInternalFrame,BorderLayout.CENTER);
-        frame.repaint();
-
-		//creates button
-		JButton button = new JButton("Start");
-		// JInternalFrame.add(button);
-
-		// Close operation
-		frame.setDefaultCloseOperation(
-			JFrame.EXIT_ON_CLOSE);
-
-		// Make the frame visible
-		frame.setVisible(true);
-
-
-
- */

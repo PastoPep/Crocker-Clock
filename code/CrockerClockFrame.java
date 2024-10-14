@@ -1,5 +1,4 @@
-// Java Swing Program to demonstrate
-// a simple JFrame
+//Clock for Mr. Crocker
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,14 +14,19 @@ import javax.swing.border.Border;
 public class CrockerClockFrame implements ActionListener{
 	private int time = 5; 
 	private int OGtime = time+0; 
-	Timer ClockDown;
+	Timer ClockDown;//creates a universal countdown
 
-	private JLabel clocky;
+	JFrame frame;
+
+	private final JLabel clocky;
+
+	private final JPanel ClockFrame;
 
 	// Create a new JFrame
 	public CrockerClockFrame() {
 
-	JFrame frame = new JFrame("Crocker's Clock"); //creates the full program, and the entire box as a whole
+	frame = new JFrame("Crocker's Clock"); //creates the full program, and the entire box as a whole
+
 
 	JButton StartButton = new JButton("Start");
 	StartButton.addActionListener(this);
@@ -39,7 +43,7 @@ public class CrockerClockFrame implements ActionListener{
 
 	clocky = new JLabel();//puts word down
 
-	JPanel ClockFrame = new JPanel(); //create frame in place inside panel
+	ClockFrame = new JPanel(); //create frame in place inside panel
 	JPanel buttonFrame = new JPanel(); //create frame in place inside panel
 
 	Border border = BorderFactory.createLineBorder(Color.black);
@@ -68,29 +72,36 @@ public class CrockerClockFrame implements ActionListener{
 	frame.setVisible(true);
 	}
 
-	//color
-
 	public static void main(String[] args) {
 		new CrockerClockFrame();//calls the method to opent he frame
-
+        //colorChangeFrameBGColor(ClockFrame);
+		
+		new CrockerControlFrame();
 
 	}
 
     @Override
     public void actionPerformed(ActionEvent e) { //start button to start countdown
+
+		time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
+		OGtime = time;
+
 		if(e.getActionCommand().equals("Start")){
 		System.out.print(e);
 		clocky.setText(""+time);//puts word down
         ClockDown = updateClocky();
 
+
         throw new UnsupportedOperationException("Not supported yet.");
     } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
 		ClockDown.cancel();
+
 	} else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
 		time = 0;
 		ClockDown.cancel();
 		time = OGtime;
 		clocky.setText(""+time);//puts word down
+		
 		
 	}
 }
@@ -117,5 +128,16 @@ public class CrockerClockFrame implements ActionListener{
 			return ClockDown;
 	}	
 
-
 }
+
+
+/*
+
+
+
+
+
+
+
+
+ */

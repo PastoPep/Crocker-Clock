@@ -14,6 +14,7 @@ import javax.swing.border.Border;
 public class CrockerClockFrame implements ActionListener{
 	private int time = 5; 
 	private int OGtime = time+0; 
+	private String test = "Test";
 	Timer ClockDown;//creates a universal countdown
 
 	JFrame frame;

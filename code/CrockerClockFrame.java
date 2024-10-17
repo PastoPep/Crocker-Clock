@@ -14,8 +14,13 @@ import javax.swing.border.Border;
 public class CrockerClockFrame implements ActionListener{
 	private int time = 5; 
 	private int OGtime = time+0; 
-	Timer ClockDown;//creates a universal countdown
+	private int timeInSecond = time%60; //time in seconds
+	private int timeInRealMinute = time/60; //time in minutes, used for calculations
+	private int timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+	private int timeInHour = timeInRealMinute/60;  //time in hours
 
+	Timer ClockDown;//creates a universal countdown
+//		clocky.setText(""+ timeInHour +" : " + timeInMinute " : " + timeInSecond);//puts word down
 	JFrame frame;
 
 	private final JLabel clocky;
@@ -82,13 +87,12 @@ public class CrockerClockFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) { //start button to start countdown
-
 		time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
 		OGtime = time;
-
+		
 		if(e.getActionCommand().equals("Start")){
 		System.out.print(e);
-		clocky.setText(""+time);//puts word down
+		clocky.setText(""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond);//puts word down
         ClockDown = updateClocky();
 
 
@@ -97,11 +101,11 @@ public class CrockerClockFrame implements ActionListener{
 		ClockDown.cancel();
 
 	} else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
-		time = 0;
-		ClockDown.cancel();
 		time = OGtime;
-		clocky.setText(""+time);//puts word down
-		
+		clocky.setText(""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond);
+		ClockDown.cancel();
+
+
 		
 	}
 }
@@ -117,7 +121,14 @@ public class CrockerClockFrame implements ActionListener{
 						time = 0;
 						ClockDown.cancel(); // stops clock
 					} else {
-						clocky.setText(""+time);//puts word down
+						timeInSecond = time%60; //time in seconds
+						timeInRealMinute = time/60; //time in minutes
+						timeInHour = timeInRealMinute/60;  //time in hours
+						timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+
+						clocky.setText(""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond);//puts word down
+
+;//puts word down
 						time--;
 					}
 					

@@ -12,15 +12,19 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
-	private int time = 5; 
+	private int time = 0; 
 	private int OGtime = time+0; 
 	private int timeInSecond = time%60; //time in seconds
 	private int timeInRealMinute = time/60; //time in minutes, used for calculations
 	private int timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
 	private int timeInHour = timeInRealMinute/60;  //time in hours
+	private boolean Isclockrunning = false; //boolean used to check if a timertask/clock is being ran
+	private boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
 
 	Timer ClockDown;//creates a universal countdown
+	
 //		clocky.setText(""+ timeInHour +" : " + timeInMinute " : " + timeInSecond);//puts word down
+
 	JFrame frame;
 
 	private final JLabel clocky;
@@ -29,6 +33,9 @@ public class CrockerClockFrame implements ActionListener{
 
 	// Create a new JFrame
 	public CrockerClockFrame() {
+    ClockDown = updateClocky();
+
+		
 
 	frame = new JFrame("Crocker's Clock"); //creates the full program, and the entire box as a whole
 
@@ -78,34 +85,53 @@ public class CrockerClockFrame implements ActionListener{
 	}
 
 	public static void main(String[] args) {
+		
 		new CrockerClockFrame();//calls the method to opent he frame
         //colorChangeFrameBGColor(ClockFrame);
 		
 		new CrockerControlFrame();
-
+		
 	}
 
     @Override
     public void actionPerformed(ActionEvent e) { //start button to start countdown
-		time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
-		OGtime = time;
 		
 		if(e.getActionCommand().equals("Start")){
-		System.out.print(e);
-		clocky.setText(""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond);//puts word down
-        ClockDown = updateClocky();
+			
 
+
+			if(Isclockrunning == false) { //CHECKS WEATHER TIMER TASK IS BEING RAN
+
+				time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
+				OGtime = time;
+				ClockDown = updateClocky();
+				Isclockrunning = true;
+				IsStopped = false;
+				
+			} else if (IsStopped == true) { //CHECKS TO SEE IF THE CODE HAS BEEN STOPPED PREVIOUSLT AND IF SO RUNS
+
+				ClockDown = updateClocky();
+				IsStopped = false;
+
+			} else {
+
+			}
+		
+		
+		clocky.setText(updateClockLabel());//puts word down
 
         throw new UnsupportedOperationException("Not supported yet.");
     } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
 		ClockDown.cancel();
+		IsStopped = true;
 
 	} else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
-		time = OGtime;
-		clocky.setText(""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond);
+		time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
+		OGtime = time;
 		ClockDown.cancel();
-
-
+		Isclockrunning = false;
+		IsStopped = true;
+		clocky.setText(updateClockLabel()); //runs the UpdateClockLabel method to change the label shown
 		
 	}
 }
@@ -115,10 +141,12 @@ public class CrockerClockFrame implements ActionListener{
 		ClockDown = new Timer();
 		TimerTask timerTaskObj;
             timerTaskObj = new TimerTask() {
+				@Override
                 public void run() {
 
 					if(time <=-1) {
 						time = 0;
+						Isclockrunning = false;
 						ClockDown.cancel(); // stops clock
 					} else {
 						timeInSecond = time%60; //time in seconds
@@ -126,9 +154,8 @@ public class CrockerClockFrame implements ActionListener{
 						timeInHour = timeInRealMinute/60;  //time in hours
 						timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
 
-						clocky.setText(""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond);//puts word down
+						clocky.setText(updateClockLabel());//puts word down
 
-;//puts word down
 						time--;
 					}
 					
@@ -138,6 +165,16 @@ public class CrockerClockFrame implements ActionListener{
 			ClockDown.schedule(timerTaskObj, 0, 1000);//delays in ms
 			return ClockDown;
 	}	
+
+	public String updateClockLabel() {
+
+		timeInSecond = time%60; //time in seconds
+		timeInRealMinute = time/60; //time in minutes
+		timeInHour = timeInRealMinute/60;  //time in hours
+		timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+
+		return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
+	}
 
 }
 

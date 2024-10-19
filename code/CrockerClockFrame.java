@@ -22,6 +22,8 @@ public class CrockerClockFrame implements ActionListener{
 	private boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
 
 	Timer ClockDown;//creates a universal countdown
+
+
 	
 //		clocky.setText(""+ timeInHour +" : " + timeInMinute " : " + timeInSecond);//puts word down
 
@@ -82,6 +84,8 @@ public class CrockerClockFrame implements ActionListener{
 	frame.setTitle("Crocker's Clock");
 	frame.pack();
 	frame.setVisible(true);
+
+
 	}
 
 	public static void main(String[] args) {
@@ -136,7 +140,7 @@ public class CrockerClockFrame implements ActionListener{
 	}
 }
 	
-	public Timer updateClocky() { //the code to update the timer to countdown
+	public Timer updateClocky() { //the code to update the timer to countdown //THIS TIMER IS FOR THE REAL TIME
 
 		ClockDown = new Timer();
 		TimerTask timerTaskObj;
@@ -149,6 +153,13 @@ public class CrockerClockFrame implements ActionListener{
 						Isclockrunning = false;
 						ClockDown.cancel(); // stops clock
 					} else {
+						
+
+						if (CrockerControlFrame.GetTimeInAddBox() != 0) {
+							time += CrockerControlFrame.GetTimeInAddBox();
+							CrockerControlFrame.ResetTimeAddBox();
+						}
+
 						timeInSecond = time%60; //time in seconds
 						timeInRealMinute = time/60; //time in minutes
 						timeInHour = timeInRealMinute/60;  //time in hours
@@ -162,10 +173,14 @@ public class CrockerClockFrame implements ActionListener{
                 }
             };
 
+			
+
 			ClockDown.schedule(timerTaskObj, 0, 1000);//delays in ms
 			return ClockDown;
 	}	
 
+
+	
 	public String updateClockLabel() {
 
 		timeInSecond = time%60; //time in seconds
@@ -176,6 +191,12 @@ public class CrockerClockFrame implements ActionListener{
 		return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
 	}
 
+
+
+
+	public int returnTime() { //getter for time
+		return time;
+	}
 }
 
 

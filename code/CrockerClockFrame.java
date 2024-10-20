@@ -173,19 +173,12 @@ public class CrockerClockFrame implements ActionListener{
 		timeInHour = timeInRealMinute/60;  //time in hours
 		timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
 
-		return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
+
+		// Using format!
+		return String.format("%02d : %02d : %02d", timeInHour, timeInDisplayedMinute, timeInSecond);
+		// return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
 	}
 
 }
 
 
-/*
-
-
-
-
-
-
-
-
- */

@@ -162,7 +162,7 @@ public class CrockerClockFrame implements ActionListener{
                 }
             };
 
-			ClockDown.schedule(timerTaskObj, 0, 1000);//delays in ms
+			ClockDown.schedule(timerTaskObj, 0, 1000/(CrockerControlFrame.getSpeed()));//delays in ms
 			return ClockDown;
 	}	
 

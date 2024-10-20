@@ -12,22 +12,22 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
-	private int time = 0; 
-	private int OGtime = time+0; 
-	private int timeInSecond = time%60; //time in seconds
-	private int timeInRealMinute = time/60; //time in minutes, used for calculations
-	private int timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
-	private int timeInHour = timeInRealMinute/60;  //time in hours
-	private boolean Isclockrunning = false; //boolean used to check if a timertask/clock is being ran
-	private boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
+	private static int time = 0; 
+	private static int OGtime = time+0; 
+	private static int timeInSecond = time%60; //time in seconds
+	private static int timeInRealMinute = time/60; //time in minutes, used for calculations
+	private static int timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+	private static int timeInHour = timeInRealMinute/60;  //time in hours
+	private static boolean Isclockrunning = false; //boolean used to check if a timertask/clock is being ran
+	private static  boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
 
-	Timer ClockDown;//creates a universal countdown
+	public static Timer ClockDown;//creates a universal countdown
 	
 //		clocky.setText(""+ timeInHour +" : " + timeInMinute " : " + timeInSecond);//puts word down
 
 	JFrame frame;
 
-	private final JLabel clocky;
+	private static JLabel clocky;
 
 	private final JPanel ClockFrame;
 
@@ -96,7 +96,8 @@ public class CrockerClockFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) { //start button to start countdown
 		
-		if(e.getActionCommand().equals("Start")){
+		
+		if(e.getActionCommand().equals("Start") || e.getActionCommand().equals("Set Speed")){
 			
 
 
@@ -132,11 +133,10 @@ public class CrockerClockFrame implements ActionListener{
 		Isclockrunning = false;
 		IsStopped = true;
 		clocky.setText(updateClockLabel()); //runs the UpdateClockLabel method to change the label shown
-		
-	}
+	} 
 }
 	
-	public Timer updateClocky() { //the code to update the timer to countdown
+	public static Timer updateClocky() { //the code to update the timer to countdown
 
 		ClockDown = new Timer();
 		TimerTask timerTaskObj;
@@ -166,7 +166,7 @@ public class CrockerClockFrame implements ActionListener{
 			return ClockDown;
 	}	
 
-	public String updateClockLabel() {
+	public static String updateClockLabel() {
 
 		timeInSecond = time%60; //time in seconds
 		timeInRealMinute = time/60; //time in minutes
@@ -180,5 +180,3 @@ public class CrockerClockFrame implements ActionListener{
 	}
 
 }
-
-

@@ -27,10 +27,31 @@ public class CrockerControlFrame implements ActionListener{
     JLabel TimeTextBox2;
     JTextField setTimeField;
     JTextField setSpeedField;
-
     JLabel AddTimeTextBox;
     JTextField SetTextField;
     static JTextField AddTextField;
+
+    // public CrockerControlFrame() {
+
+    // frame = new JFrame("Crocker's Control"); //Application Control Window
+
+	// panel = new JPanel();//Main frame
+	// panel.setBorder(BorderFactory.createEmptyBorder(100,300,100,300));
+	// panel.setLayout(new GridLayout(0,1));
+    // frame.add(panel,BorderLayout.CENTER);//add main frame/panel to the frame
+
+    // /*
+    //  *  using for Seperation of code 
+    //  */ //SET TIME
+
+    // TimeBox = new JPanel(); //Panel that contains the Set Time
+    // TimeBox.setBorder(BorderFactory.createEmptyBorder(100,300,100,300));
+	// TimeBox.setLayout(new GridLayout(0,1));
+    // panel.add(TimeBox,BorderLayout.CENTER);
+
+    // JLabel AddTimeTextBox;
+    // JTextField SetTextField;
+    // static final JTextField AddTextField;
 
     public CrockerControlFrame() {
 
@@ -111,11 +132,7 @@ public class CrockerControlFrame implements ActionListener{
     /* //ADD TIME
      *  using for Seperation of code 
      */ //Buttons
-	
-	JButton SetButton = new JButton("Set"); //creates a button to set the time
-	SetButton.addActionListener(this);
-	TimeBox.add(SetButton);//adds the set time buttons
-
+		
     JButton AddButton = new JButton("Add"); //creates a button to set the time
 	AddButton.addActionListener(this);
 	AddTimeBox.add(AddButton);//adds the add time buttons
@@ -127,13 +144,17 @@ public class CrockerControlFrame implements ActionListener{
     TimeInBox = SetTextField.getText();
     TimeInAddBox = AddTextField.getText();
 
-
     }
 
 
     public static void main(String[] args) {
+
         
         new CrockerClockFrame();
+
+
+	
+		new CrockerControlFrame();
 
         //System.out.println(TimeInBox);
 
@@ -157,7 +178,6 @@ public class CrockerControlFrame implements ActionListener{
     }
 
     public void SetTimeInBox() {//setter to get TimeInBox Value
-
         TimeInBox = setTimeField.getText();
     }
 
@@ -182,14 +202,19 @@ public class CrockerControlFrame implements ActionListener{
 	
     @Override
     public void actionPerformed(ActionEvent e) { //button to call the setter 
+
         if(e.getActionCommand().equals("Set Time")) {
             SetTimeInBox();
         } else if (e.getActionCommand().equals("Set Speed")) {
             SetSpeedInBox();
             speed = GetSpeedInTextBox();
 
-            CrockerClockFrame.ClockDown.cancel();
-            CrockerClockFrame.ClockDown = CrockerClockFrame.updateClocky();
+
+            if(CrockerClockFrame.isRunning()) {
+                CrockerClockFrame.ClockDown.cancel();
+                CrockerClockFrame.ClockDown = CrockerClockFrame.updateClocky();
+            }
+            
         } else if (e.getActionCommand().equals("Add")) {
             SetTimeInAddBox();
         } 

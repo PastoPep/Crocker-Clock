@@ -1,3 +1,4 @@
+
 //Clock for Mr. Crocker
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
-  
+
 	private static int time = 0; 
 	private static int OGtime = time+0; 
 	private static int timeInSecond = time%60; //time in seconds
@@ -19,11 +20,10 @@ public class CrockerClockFrame implements ActionListener{
 	private static int timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
 	private static int timeInHour = timeInRealMinute/60;  //time in hours
 	private static boolean Isclockrunning = false; //boolean used to check if a timertask/clock is being ran
-	private static  boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
+	private static boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
 
 	public static Timer ClockDown;//creates a universal countdown
 	
-//		clocky.setText(""+ timeInHour +" : " + timeInMinute " : " + timeInSecond);//puts word down
 
 	JFrame frame;
 
@@ -92,7 +92,6 @@ public class CrockerClockFrame implements ActionListener{
 		panel.setPreferredSize(new Dimension(960, 540));
 
 
-
 		// Adds all panels and buttons to their locations
 		panel.add(ClockFrame,BorderLayout.CENTER); 
 		panel.add(buttonFrame,BorderLayout.CENTER); 
@@ -151,7 +150,7 @@ public class CrockerClockFrame implements ActionListener{
 		clocky.setText(updateClockLabel());//puts word down
 
         throw new UnsupportedOperationException("Not supported yet.");
-      
+			
         } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
             ClockDown.cancel();
             IsStopped = true;
@@ -166,7 +165,6 @@ public class CrockerClockFrame implements ActionListener{
             
         }
     }
-
 	
 	public static Timer updateClocky() { //the code to update the timer to countdown
 
@@ -181,6 +179,12 @@ public class CrockerClockFrame implements ActionListener{
 						Isclockrunning = false;
 						ClockDown.cancel(); // stops clock
 					} else {
+
+						if (CrockerControlFrame.GetTimeInAddBox() != 0) {
+							time += CrockerControlFrame.GetTimeInAddBox();
+							CrockerControlFrame.ResetTimeAddBox();
+						}
+
 						timeInSecond = time%60; //time in seconds
 						timeInRealMinute = time/60; //time in minutes
 						timeInHour = timeInRealMinute/60;  //time in hours
@@ -204,8 +208,7 @@ public class CrockerClockFrame implements ActionListener{
 		timeInRealMinute = time/60; //time in minutes
 		timeInHour = timeInRealMinute/60;  //time in hours
 		timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
-
-
+		
 		// Using format!
 		return String.format("%02d : %02d : %02d", timeInHour, timeInDisplayedMinute, timeInSecond);
 		// return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
@@ -270,6 +273,12 @@ public class CrockerClockFrame implements ActionListener{
 		}
 
 		
+	}
+
+
+	// GETTERS
+	public static boolean isRunning() {
+		return !IsStopped;
 	}
 
 }

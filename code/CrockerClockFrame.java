@@ -1,3 +1,4 @@
+
 //Clock for Mr. Crocker
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -175,6 +176,12 @@ public class CrockerClockFrame implements ActionListener{
 						Isclockrunning = false;
 						ClockDown.cancel(); // stops clock
 					} else {
+
+						if (CrockerControlFrame.GetTimeInAddBox() != 0) {
+							time += CrockerControlFrame.GetTimeInAddBox();
+							CrockerControlFrame.ResetTimeAddBox();
+						}
+
 						timeInSecond = time%60; //time in seconds
 						timeInRealMinute = time/60; //time in minutes
 						timeInHour = timeInRealMinute/60;  //time in hours

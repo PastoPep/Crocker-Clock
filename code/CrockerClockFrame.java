@@ -9,12 +9,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
-	private int time = 5; 
+	private int time = 0; 
 	private int OGtime = time+0; 
+	private int timeInSecond = time%60; //time in seconds
+	private int timeInRealMinute = time/60; //time in minutes, used for calculations
+	private int timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+	private int timeInHour = timeInRealMinute/60;  //time in hours
+	private boolean Isclockrunning = false; //boolean used to check if a timertask/clock is being ran
+	private boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
+
 	Timer ClockDown;//creates a universal countdown
 
 	JFrame frame;
@@ -25,63 +30,65 @@ public class CrockerClockFrame implements ActionListener{
 
 	// Create a new JFrame
 	public CrockerClockFrame() {
+        ClockDown = updateClocky();
+            
 
-		frame = new JFrame("Crocker's Clock"); //creates the full program, and the entire box as a whole
+        frame = new JFrame("Crocker's Clock"); //creates the full program, and the entire box as a whole
 
 
-		// Creates and formats the whole panel for the appplication
-		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createEmptyBorder(83,106,83,106));
+
+		// Creates and formats Start Button
+        JButton StartButton = new RoundedButton("Start");
+        StartButton.addActionListener(this);
+        StartButton.setFont(new Font("Arial", Font.BOLD, 40));
+		StartButton.setForeground(Color.WHITE);
+		StartButton.setBackground(new Color(154, 255, 156));
+		StartButton.setPreferredSize(new Dimension(200, 70));
+
+		// Creates and formats Stop Button
+        JButton StawpButton = new RoundedButton("Stop");//add buttons
+        StawpButton.addActionListener(this);
+        StawpButton.setFont(new Font("Arial", Font.BOLD, 40));
+		StawpButton.setBackground(new Color(255, 129, 101));
+		StawpButton.setForeground(Color.WHITE);
+		StawpButton.setPreferredSize(new Dimension(200, 70)); 
+
+        // Creates and formats Reset Button
+        JButton ResetButtons = new RoundedButton("Reset");//add buttons
+        ResetButtons.addActionListener(this);
+        ResetButtons.setFont(new Font("Arial", Font.BOLD, 40));
+		ResetButtons.setBackground(new Color(166, 166, 166));
+		ResetButtons.setForeground(Color.WHITE);
+		ResetButtons.setPreferredSize(new Dimension(200, 70));
+
+
+
+		// Creates and formats the text for the Display Timer
+        clocky = new JLabel();
+        clocky.setFont(new Font("Arial", Font.BOLD, 160));
+		clocky.setForeground(Color.BLACK);
+
+        // Creates and formats the frame for the Display Timer
+        ClockFrame = new RoundedPanel();
+        ClockFrame.setBackground(new Color(56, 182, 255));
+		ClockFrame.setPreferredSize(new Dimension(750, 210));
+
+
+
+        // Creates and formats panel to hold all the buttons
+        JPanel buttonFrame = new JPanel(); 
+        buttonFrame.setBorder(BorderFactory.createEmptyBorder(73,38,0,38));
+		buttonFrame.setBackground(Color.WHITE);
+		buttonFrame.setLayout(new GridLayout(0, 3, 36, 0));
+
+        // Creates and formats the whole panel for the appplication
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(83,106,83,106));
 		panel.setBackground(Color.WHITE);
 		panel.setLayout(new GridLayout(0,1));
 		panel.setPreferredSize(new Dimension(960, 540));
 
 
-		// Creates and formats the frame for the Display Timer
-		ClockFrame = new RoundedPanel();
-		ClockFrame.setBackground(new Color(56, 182, 255));
-		ClockFrame.setPreferredSize(new Dimension(750, 210));
-
-
-		// Creates and formats the text for the Display Timer
-		clocky = new JLabel();
-		clocky.setFont(new Font("Arial", Font.BOLD, 160));
-		clocky.setForeground(Color.BLACK);
-
-
-		// Creates and formats panel to hold all the buttons
-		JPanel buttonFrame = new JPanel(); 
-		buttonFrame.setBorder(BorderFactory.createEmptyBorder(73,38,0,38));
-		buttonFrame.setBackground(Color.WHITE);
-		buttonFrame.setLayout(new GridLayout(0, 3, 36, 0));
-
-
-		// Creates and formats Start Button
-		RoundedButton StartButton = new RoundedButton("Start");
-		StartButton.addActionListener(this);
-		StartButton.setFont(new Font("Arial", Font.BOLD, 40));
-		StartButton.setForeground(Color.WHITE);
-		StartButton.setBackground(new Color(154, 255, 156));
-		StartButton.setPreferredSize(new Dimension(200, 70)); 
-
-
-		// Creates and formats Stop Button
-		RoundedButton StawpButton = new RoundedButton("Stop");
-		StawpButton.addActionListener(this);
-		StawpButton.setFont(new Font("Arial", Font.BOLD, 40));
-		StawpButton.setBackground(new Color(255, 129, 101));
-		StawpButton.setForeground(Color.WHITE);
-		StawpButton.setPreferredSize(new Dimension(200, 70)); 
-
-
-		// Creates and formats Reset Button
-		RoundedButton ResetButtons = new RoundedButton("Reset");
-		ResetButtons.addActionListener(this);
-		ResetButtons.setFont(new Font("Arial", Font.BOLD, 40));
-		ResetButtons.setBackground(new Color(166, 166, 166));
-		ResetButtons.setForeground(Color.WHITE);
-		ResetButtons.setPreferredSize(new Dimension(200, 70));
-		
 
 		// Adds all panels and buttons to their locations
 		panel.add(ClockFrame,BorderLayout.CENTER); 
@@ -90,8 +97,7 @@ public class CrockerClockFrame implements ActionListener{
 		buttonFrame.add(StartButton); 
 		buttonFrame.add(StawpButton);
 		buttonFrame.add(ResetButtons);
-		
-		
+
 		// Formats main frame
 		frame.add(panel,BorderLayout.CENTER);
 		frame.pack();
@@ -104,8 +110,99 @@ public class CrockerClockFrame implements ActionListener{
 		frame.setVisible(true);
 	}
 
+	public static void main(String[] args) {
+		
+		new CrockerClockFrame();//calls the method to opent he frame
+        //colorChangeFrameBGColor(ClockFrame);
+		
+		new CrockerControlFrame();
+		
+	}
 
-	// Subclass to allow for rounded panels with rounded borders
+    @Override
+    public void actionPerformed(ActionEvent e) { //start button to start countdown
+		
+		if(e.getActionCommand().equals("Start")){
+			
+
+
+			if(Isclockrunning == false) { //CHECKS WEATHER TIMER TASK IS BEING RAN
+
+				time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
+				OGtime = time;
+				ClockDown = updateClocky();
+				Isclockrunning = true;
+				IsStopped = false;
+				
+			} else if (IsStopped == true) { //CHECKS TO SEE IF THE CODE HAS BEEN STOPPED PREVIOUSLT AND IF SO RUNS
+
+				ClockDown = updateClocky();
+				IsStopped = false;
+
+			} else {
+
+			}
+		
+		
+		clocky.setText(updateClockLabel());//puts word down
+
+        throw new UnsupportedOperationException("Not supported yet.");
+        } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
+            ClockDown.cancel();
+            IsStopped = true;
+
+        } else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
+            time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
+            OGtime = time;
+            ClockDown.cancel();
+            Isclockrunning = false;
+            IsStopped = true;
+            clocky.setText(updateClockLabel()); //runs the UpdateClockLabel method to change the label shown
+            
+        }
+    }
+	
+	public Timer updateClocky() { //the code to update the timer to countdown
+
+		ClockDown = new Timer();
+		TimerTask timerTaskObj;
+            timerTaskObj = new TimerTask() {
+				@Override
+                public void run() {
+
+					if(time <=-1) {
+						time = 0;
+						Isclockrunning = false;
+						ClockDown.cancel(); // stops clock
+					} else {
+						timeInSecond = time%60; //time in seconds
+						timeInRealMinute = time/60; //time in minutes
+						timeInHour = timeInRealMinute/60;  //time in hours
+						timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+
+						clocky.setText(updateClockLabel());//puts word down
+
+						time--;
+					}
+					
+                }
+            };
+
+			ClockDown.schedule(timerTaskObj, 0, 1000);//delays in ms
+			return ClockDown;
+	}	
+
+	public String updateClockLabel() {
+
+		timeInSecond = time%60; //time in seconds
+		timeInRealMinute = time/60; //time in minutes
+		timeInHour = timeInRealMinute/60;  //time in hours
+		timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+
+		return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
+	}
+
+    // Subclass to allow for rounded panels with rounded borders
 	public class RoundedPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
@@ -166,72 +263,4 @@ public class CrockerClockFrame implements ActionListener{
 		
 	}
 
-	public static void main(String[] args) {
-		new CrockerClockFrame();//calls the method to opent he frame
-        //colorChangeFrameBGColor(ClockFrame);
-		
-		new CrockerControlFrame();
-
-	}
-
-    @Override
-    public void actionPerformed(ActionEvent e) { //start button to start countdown
-
-		time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
-		OGtime = time;
-
-		if(e.getActionCommand().equals("Start")){
-		System.out.print(e);
-		clocky.setText(""+time);//puts word down
-        ClockDown = updateClocky();
-
-
-        throw new UnsupportedOperationException("Not supported yet.");
-    } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
-		ClockDown.cancel();
-
-	} else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
-		time = 0;
-		ClockDown.cancel();
-		time = OGtime;
-		clocky.setText(""+time);//puts word down
-		
-		
-	}
 }
-	
-	public Timer updateClocky() { //the code to update the timer to countdown
-
-		ClockDown = new Timer();
-		TimerTask timerTaskObj;
-            timerTaskObj = new TimerTask() {
-                public void run() {
-
-					if(time <=-1) {
-						time = 0;
-						ClockDown.cancel(); // stops clock
-					} else {
-						clocky.setText(""+time);//puts word down
-						time--;
-					}
-					
-                }
-            };
-
-			ClockDown.schedule(timerTaskObj, 0, 1000);//delays in ms
-			return ClockDown;
-	}	
-
-}
-
-
-/*
-
-
-
-
-
-
-
-
- */

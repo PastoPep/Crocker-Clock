@@ -1,12 +1,15 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 public class CrockerControlFrame implements ActionListener{
 
@@ -31,6 +34,20 @@ public class CrockerControlFrame implements ActionListener{
     JTextField SetTextField;
     static JTextField AddTextField;
 
+    //CLOCK FRAME RELATED
+    JPanel Clockpanel;
+    Border blackline;
+    static JLabel clocky;
+
+    //Clock Related
+    private static int time = 0; 
+	private static int OGtime = time+0; 
+	private static int timeInSecond = time%60; //time in seconds
+	private static int timeInRealMinute = time/60; //time in minutes, used for calculations
+	private static int timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+	private static int timeInHour = timeInRealMinute/60;  //time in hours
+    static Timer ClockDown;
+
     // public CrockerControlFrame() {
 
     // frame = new JFrame("Crocker's Control"); //Application Control Window
@@ -54,7 +71,7 @@ public class CrockerControlFrame implements ActionListener{
     // static final JTextField AddTextField;
 
     public CrockerControlFrame() {
-
+        ClockDown = updateClocky();
         frame = new JFrame("Crocker's Control"); //Application Control Window
 
         // MAIN FRAME
@@ -62,6 +79,15 @@ public class CrockerControlFrame implements ActionListener{
         panel.setBorder(BorderFactory.createEmptyBorder(100,300,100,300));
         panel.setLayout(new GridLayout(0,1));
         frame.add(panel,BorderLayout.CENTER);//add main frame/panel to the frame
+
+        // CLOCK FRAME
+        Clockpanel = new JPanel(); //Panel that contains the real clock
+        panel.add(Clockpanel,BorderLayout.CENTER);
+        blackline = BorderFactory.createLineBorder(Color.black);
+        Clockpanel.setBorder(blackline);
+        clocky = new JLabel();
+        Clockpanel.add(clocky,BorderLayout.CENTER);
+        clocky.setText(updateClockLabel());
 
         // CONTROL FRAME
         TimeBox = new JPanel(); //Panel that contains the Set Time
@@ -118,16 +144,19 @@ public class CrockerControlFrame implements ActionListener{
      AddTimeBox = new JPanel(); //Panel that contains the Set Time
      AddTimeBox.setBorder(BorderFactory.createEmptyBorder(100,300,100,300));
      AddTimeBox.setLayout(new GridLayout(0,1));
-     panel.add(AddTimeBox,BorderLayout.CENTER);
+     //panel.add(AddTimeBox,BorderLayout.CENTER);
+     TimeBox.add(AddTimeBox,BorderLayout.CENTER);
+
  
      AddTimeTextBox = new JLabel();
      AddTimeTextBox.setText("Add Time to the timer");//puts word down
-     AddTimeBox.add(AddTimeTextBox,BorderLayout.CENTER);
- 
+     //AddTimeBox.add(AddTimeTextBox,BorderLayout.CENTER);
+     TimeBox.add(AddTimeTextBox,BorderLayout.CENTER);
  
      AddTextField = new JTextField(1); //creates the text field where the user enters the time
      AddTextField.setText("0");
-     AddTimeBox.add(AddTextField,BorderLayout.CENTER);
+     //AddTimeBox.add(AddTextField,BorderLayout.CENTER);
+     TimeBox.add(AddTextField,BorderLayout.CENTER);
 
     /* //ADD TIME
      *  using for Seperation of code 
@@ -135,9 +164,10 @@ public class CrockerControlFrame implements ActionListener{
 		
     JButton AddButton = new JButton("Add"); //creates a button to set the time
 	AddButton.addActionListener(this);
-	AddTimeBox.add(AddButton);//adds the add time buttons
-
+	//AddTimeBox.add(AddButton);//adds the add time buttons
+    TimeBox.add(AddButton,BorderLayout.CENTER);
     
+
     TimeInBox = setTimeField.getText();
     SpeedInTextBox = setTimeField.getText();
 
@@ -199,24 +229,81 @@ public class CrockerControlFrame implements ActionListener{
         TimeInAddBox = "0";
     }
 
-	
-    @Override
-    public void actionPerformed(ActionEvent e) { //button to call the setter 
+    public static String updateClockLabel() {
 
-        if(e.getActionCommand().equals("Set Time")) {
-            SetTimeInBox();
-        } else if (e.getActionCommand().equals("Set Speed")) {
-            SetSpeedInBox();
-            speed = GetSpeedInTextBox();
+		timeInSecond = time%60; //time in seconds
+		timeInRealMinute = time/60; //time in minutes
+		timeInHour = timeInRealMinute/60;  //time in hours
+		timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+		
+		// Using format!
+		return String.format("%02d : %02d : %02d", timeInHour, timeInDisplayedMinute, timeInSecond);
+		// return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
+	}
+    
+	//THE CLOCK
+    public static Timer updateClocky() { //the code to update the timer to countdown
+		ClockDown = new Timer();
+		TimerTask timerTaskObj;
+            timerTaskObj = new TimerTask() {
+				@Override
+                public void run() {
 
+					if(time <=-1) {
+						time = 0;
+						ClockDown.cancel(); // stops clock
+					} else {
 
-            if(CrockerClockFrame.isRunning()) {
-                CrockerClockFrame.ClockDown.cancel();
-                CrockerClockFrame.ClockDown = CrockerClockFrame.updateClocky();
-            }
-            
-        } else if (e.getActionCommand().equals("Add")) {
-            SetTimeInAddBox();
-        } 
-     }
-}
+						if (CrockerControlFrame.GetTimeInAddBox() != 0) {
+							time += CrockerControlFrame.GetTimeInAddBox();
+							CrockerControlFrame.ResetTimeAddBox();
+						}
+
+						timeInSecond = time%60; //time in seconds
+						timeInRealMinute = time/60; //time in minutes
+						timeInHour = timeInRealMinute/60;  //time in hours
+						timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
+
+						clocky.setText(updateClockLabel());//puts word down
+
+						time--;
+					}
+					
+                }
+            };
+
+            ClockDown.schedule(timerTaskObj, 0, 1000/(CrockerControlFrame.getSpeed()));//delays in ms
+			return ClockDown;
+        }
+
+        public static void StartClock(int times) { //starts clock from ClockFrame used for when startCountdown new time
+            time = times;
+            ClockDown = updateClocky();
+        }
+        public static void StartClock() { //starts clock from ClockFrame
+            ClockDown = updateClocky();
+        }
+        public static void StopClock() {
+            ClockDown.cancel();
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) { //button to call the setter 
+    
+            if(e.getActionCommand().equals("Set Time")) {
+                SetTimeInBox();
+            } else if (e.getActionCommand().equals("Set Speed")) {
+                SetSpeedInBox();
+                speed = GetSpeedInTextBox();
+    
+    
+                if(CrockerClockFrame.isRunning()) {
+                    CrockerClockFrame.ClockDown.cancel();
+                    CrockerClockFrame.ClockDown = CrockerClockFrame.updateClocky();
+                }
+                
+            } else if (e.getActionCommand().equals("Add")) {
+                SetTimeInAddBox();
+            } 
+         }
+    }

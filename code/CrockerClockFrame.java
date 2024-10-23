@@ -136,11 +136,13 @@ public class CrockerClockFrame implements ActionListener{
 				ClockDown = updateClocky();
 				Isclockrunning = true;
 				IsStopped = false;
+				CrockerControlFrame.StartClock(time);
 				
 			} else if (IsStopped == true) { //CHECKS TO SEE IF THE CODE HAS BEEN STOPPED PREVIOUSLT AND IF SO RUNS
 
 				ClockDown = updateClocky();
 				IsStopped = false;
+				CrockerControlFrame.StartClock();
 
 			} else {
 
@@ -153,6 +155,7 @@ public class CrockerClockFrame implements ActionListener{
 			
         } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
             ClockDown.cancel();
+			CrockerControlFrame.StopClock();
             IsStopped = true;
 
         } else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
@@ -167,7 +170,6 @@ public class CrockerClockFrame implements ActionListener{
     }
 	
 	public static Timer updateClocky() { //the code to update the timer to countdown
-
 		ClockDown = new Timer();
 		TimerTask timerTaskObj;
             timerTaskObj = new TimerTask() {
@@ -278,7 +280,7 @@ public class CrockerClockFrame implements ActionListener{
 
 	// GETTERS
 	public static boolean isRunning() {
-		return !IsStopped;
+		return IsStopped;
 	}
 
 }

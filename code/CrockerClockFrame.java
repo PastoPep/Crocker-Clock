@@ -1,15 +1,22 @@
 
+//Drum Roll Ending Celebration  Sound Effect  ProSounds - Name of Audio File
 //Clock for Mr. Crocker
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.sound.sampled.*;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
 
@@ -21,6 +28,7 @@ public class CrockerClockFrame implements ActionListener{
 	private static int timeInHour = timeInRealMinute/60;  //time in hours
 	private static boolean Isclockrunning = false; //boolean used to check if a timertask/clock is being ran
 	private static boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
+	int fontSize = 160;
 
 	public static Timer ClockDown;//creates a universal countdown
 	
@@ -64,18 +72,15 @@ public class CrockerClockFrame implements ActionListener{
 		ResetButtons.setForeground(Color.WHITE);
 		ResetButtons.setPreferredSize(new Dimension(200, 70));
 
-
-
-		// Creates and formats the text for the Display Timer
-        clocky = new JLabel();
-        clocky.setFont(new Font("Arial", Font.BOLD, 160));
-		clocky.setForeground(Color.BLACK);
-
         // Creates and formats the frame for the Display Timer
         ClockFrame = new RoundedPanel();
         ClockFrame.setBackground(new Color(56, 182, 255));
 		ClockFrame.setPreferredSize(new Dimension(750, 210));
 
+		// Creates and formats the text for the Display Timer
+        clocky = new JLabel();
+        clocky.setFont(new Font("Arial", Font.BOLD,160));
+		clocky.setForeground(Color.BLACK);
 
 
         // Creates and formats panel to hold all the buttons
@@ -100,6 +105,14 @@ public class CrockerClockFrame implements ActionListener{
 		buttonFrame.add(StawpButton);
 		buttonFrame.add(ResetButtons);
 
+		ClockFrame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				adjustFontSize();
+			}
+		});
+		
+
 		// Formats main frame
 		frame.add(panel,BorderLayout.CENTER);
 		frame.pack();
@@ -120,6 +133,19 @@ public class CrockerClockFrame implements ActionListener{
 		new CrockerControlFrame();
 		
 	}
+
+    private void adjustFontSize() { //adjusts the size of the font of the label
+        int panelWidth = ClockFrame.getWidth();
+        int panelHeight = ClockFrame.getHeight();
+		if(panelWidth > panelHeight) {
+        	fontSize = (int)(160*(1*(panelWidth/panelHeight + panelHeight/panelWidth))/4.5);
+		} else if (panelHeight > panelWidth) {
+			fontSize = (int)(160*(1*(panelHeight/panelWidth)*44723));
+		}else {
+			fontSize = 160;
+		}
+        clocky.setFont(new Font("Arial", Font.BOLD, fontSize));
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) { //start button to start countdown
@@ -165,6 +191,7 @@ public class CrockerClockFrame implements ActionListener{
             Isclockrunning = false;
             IsStopped = true;
             clocky.setText(updateClockLabel()); //runs the UpdateClockLabel method to change the label shown
+			CrockerControlFrame.ResetClockDown(OGtime);
             
         }
     }
@@ -180,6 +207,7 @@ public class CrockerClockFrame implements ActionListener{
 						time = 0;
 						Isclockrunning = false;
 						ClockDown.cancel(); // stops clock
+						AudioPlayer();
 					} else {
 
 						if (CrockerControlFrame.GetTimeInAddBox() != 0) {
@@ -215,6 +243,34 @@ public class CrockerClockFrame implements ActionListener{
 		return String.format("%02d : %02d : %02d", timeInHour, timeInDisplayedMinute, timeInSecond);
 		// return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
 	}
+
+
+        @SuppressWarnings("ConvertToTryWithResources")
+		public static void AudioPlayer() {
+			try {
+				// Specify the audio file path
+				File audioFile = new File("Drum Roll Ending Celebration Sound Effect ProSounds.wav"); //Finds the Audio File
+	
+				// Set up the audio stream and open the audio clip
+				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+				Clip clip = AudioSystem.getClip();
+				clip.open(audioStream);
+	
+				// Play the audio clip
+				clip.start();
+	
+				// Wait until the audio finish playing
+				Thread.sleep(clip.getMicrosecondLength() / 1000);
+	
+				// closes the audio
+				clip.close();
+				audioStream.close();
+	
+			} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	
 
     // Subclass to allow for rounded panels with rounded borders
 	public class RoundedPanel extends JPanel {

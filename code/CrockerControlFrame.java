@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -285,6 +286,12 @@ public class CrockerControlFrame implements ActionListener{
         }
         public static void StopClock() {
             ClockDown.cancel();
+        }
+        public static void ResetClockDown(int times) {
+            ClockDown.cancel();
+            time = times;
+            ClockDown = updateClocky();
+            
         }
 
         @Override

@@ -83,7 +83,7 @@ public class CrockerControlFrame implements ActionListener{
             File FontFile = new File("code\\Anton-Regular.ttf");
             font = Font.createFont(Font.TRUETYPE_FONT, FontFile);
         } catch(Exception e) {
-    
+            System.out.println("Could not find file");
         }
 
 
@@ -112,8 +112,8 @@ public class CrockerControlFrame implements ActionListener{
         clocky.setPreferredSize(new Dimension(525, 215)); 
 //         blackline = BorderFactory.createLineBorder(Color.black); // Border 
 //         clocky.setBorder(blackline); // Border
-        // clocky.setFont(new Font("Anton-Regular", Font.BOLD, 95));
-        clocky.setFont(font.deriveFont(Font.PLAIN, 95));
+        clocky.setFont(new Font("Anton-Regular", Font.BOLD, 95));
+        //clocky.setFont(font.deriveFont(Font.PLAIN, 95));
         clocky.setHorizontalAlignment(SwingConstants.CENTER);
 
 

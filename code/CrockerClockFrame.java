@@ -1,22 +1,18 @@
 
-//Drum Roll Ending Celebration  Sound Effect  ProSounds - Name of Audio File
 //Clock for Mr. Crocker
 import java.awt.*;
+import java.io.IOException;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.sound.sampled.*;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import javax.swing.SwingConstants;
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
 
@@ -28,11 +24,9 @@ public class CrockerClockFrame implements ActionListener{
 	private static int timeInHour = timeInRealMinute/60;  //time in hours
 	private static boolean Isclockrunning = false; //boolean used to check if a timertask/clock is being ran
 	private static boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
-	int fontSize = 160;
 
 	public static Timer ClockDown;//creates a universal countdown
-	
-
+    Font font;
 	JFrame frame;
 
 	private static JLabel clocky;
@@ -41,6 +35,14 @@ public class CrockerClockFrame implements ActionListener{
 
 	// Create a new JFrame
 	public CrockerClockFrame() {
+	    // FONT IMPLEMENTATION
+		try {
+            File FontFile = new File("Anton-Regular.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, FontFile);
+        } catch(Exception e) {
+    
+        }
+
         ClockDown = updateClocky();
             
 
@@ -49,38 +51,46 @@ public class CrockerClockFrame implements ActionListener{
 
 
 		// Creates and formats Start Button
-        JButton StartButton = new RoundedButton("Start");
+        JButton StartButton = new RoundedButton("START");
         StartButton.addActionListener(this);
-        StartButton.setFont(new Font("Arial", Font.BOLD, 40));
+        // StartButton.setFont(new Font("Arial", Font.BOLD, 40));
+		StartButton.setFont(font.deriveFont(Font.PLAIN, 40f));
 		StartButton.setForeground(Color.WHITE);
 		StartButton.setBackground(new Color(154, 255, 156));
 		StartButton.setPreferredSize(new Dimension(200, 70));
 
 		// Creates and formats Stop Button
-        JButton StawpButton = new RoundedButton("Stop");//add buttons
+        JButton StawpButton = new RoundedButton("STOP");//add buttons
         StawpButton.addActionListener(this);
-        StawpButton.setFont(new Font("Arial", Font.BOLD, 40));
+        StawpButton.setFont(font.deriveFont(Font.PLAIN, 40f));
 		StawpButton.setBackground(new Color(255, 129, 101));
 		StawpButton.setForeground(Color.WHITE);
 		StawpButton.setPreferredSize(new Dimension(200, 70)); 
 
         // Creates and formats Reset Button
-        JButton ResetButtons = new RoundedButton("Reset");//add buttons
+        JButton ResetButtons = new RoundedButton("RESET");//add buttons
         ResetButtons.addActionListener(this);
-        ResetButtons.setFont(new Font("Arial", Font.BOLD, 40));
+        ResetButtons.setFont(font.deriveFont(Font.PLAIN, 40f));
 		ResetButtons.setBackground(new Color(166, 166, 166));
 		ResetButtons.setForeground(Color.WHITE);
 		ResetButtons.setPreferredSize(new Dimension(200, 70));
+
+
+
+		// Creates and formats the text for the Display Timer
+        clocky = new JLabel();
+        // clocky.setFont(new Font("Arial", Font.BOLD, 160));
+		clocky.setText("00:00:00");
+		clocky.setFont(font.deriveFont(Font.PLAIN, 140f));
+		clocky.setForeground(Color.BLACK);
+		clocky.setVerticalAlignment(SwingConstants.CENTER);
+
 
         // Creates and formats the frame for the Display Timer
         ClockFrame = new RoundedPanel();
         ClockFrame.setBackground(new Color(56, 182, 255));
 		ClockFrame.setPreferredSize(new Dimension(750, 210));
 
-		// Creates and formats the text for the Display Timer
-        clocky = new JLabel();
-        clocky.setFont(new Font("Arial", Font.BOLD,160));
-		clocky.setForeground(Color.BLACK);
 
 
         // Creates and formats panel to hold all the buttons
@@ -105,14 +115,6 @@ public class CrockerClockFrame implements ActionListener{
 		buttonFrame.add(StawpButton);
 		buttonFrame.add(ResetButtons);
 
-		ClockFrame.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				adjustFontSize();
-			}
-		});
-		
-
 		// Formats main frame
 		frame.add(panel,BorderLayout.CENTER);
 		frame.pack();
@@ -134,24 +136,11 @@ public class CrockerClockFrame implements ActionListener{
 		
 	}
 
-    private void adjustFontSize() { //adjusts the size of the font of the label
-        int panelWidth = ClockFrame.getWidth();
-        int panelHeight = ClockFrame.getHeight();
-		if(panelWidth > panelHeight) {
-        	fontSize = (int)(160*(1*(panelWidth/panelHeight + panelHeight/panelWidth))/4.5);
-		} else if (panelHeight > panelWidth) {
-			fontSize = (int)(160*(1*(panelHeight/panelWidth)*44723));
-		}else {
-			fontSize = 160;
-		}
-        clocky.setFont(new Font("Arial", Font.BOLD, fontSize));
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) { //start button to start countdown
 		
 		
-		if(e.getActionCommand().equals("Start")){
+		if(e.getActionCommand().equals("START")){
 			
 
 
@@ -179,19 +168,18 @@ public class CrockerClockFrame implements ActionListener{
 
         throw new UnsupportedOperationException("Not supported yet.");
 			
-        } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
+        } else if (e.getActionCommand().equals("STOP")) { //when stop button, calls cancel on the tmer
             ClockDown.cancel();
 			CrockerControlFrame.StopClock();
             IsStopped = true;
 
-        } else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
+        } else if (e.getActionCommand().equals("RESET")) {//when reset button, calls cancel on timer and resets to og time
             time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
             OGtime = time;
             ClockDown.cancel();
             Isclockrunning = false;
             IsStopped = true;
             clocky.setText(updateClockLabel()); //runs the UpdateClockLabel method to change the label shown
-			CrockerControlFrame.ResetClockDown(OGtime);
             
         }
     }
@@ -207,7 +195,6 @@ public class CrockerClockFrame implements ActionListener{
 						time = 0;
 						Isclockrunning = false;
 						ClockDown.cancel(); // stops clock
-						AudioPlayer();
 					} else {
 
 						if (CrockerControlFrame.GetTimeInAddBox() != 0) {
@@ -243,34 +230,6 @@ public class CrockerClockFrame implements ActionListener{
 		return String.format("%02d : %02d : %02d", timeInHour, timeInDisplayedMinute, timeInSecond);
 		// return (""+ timeInHour +" : " + timeInDisplayedMinute + " : " + timeInSecond); //RETURNS THE TIME IN HH:MM:SS format USED FOR TEXT LABELS
 	}
-
-
-        @SuppressWarnings("ConvertToTryWithResources")
-		public static void AudioPlayer() {
-			try {
-				// Specify the audio file path
-				File audioFile = new File("Drum Roll Ending Celebration Sound Effect ProSounds.wav"); //Finds the Audio File
-	
-				// Set up the audio stream and open the audio clip
-				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-				Clip clip = AudioSystem.getClip();
-				clip.open(audioStream);
-	
-				// Play the audio clip
-				clip.start();
-	
-				// Wait until the audio finish playing
-				Thread.sleep(clip.getMicrosecondLength() / 1000);
-	
-				// closes the audio
-				clip.close();
-				audioStream.close();
-	
-			} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	
 
     // Subclass to allow for rounded panels with rounded borders
 	public class RoundedPanel extends JPanel {

@@ -1,4 +1,5 @@
 
+
 //Clock for Mr. Crocker
 import java.awt.*;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.sound.sampled.*;
 
 import javax.swing.SwingConstants;
 
@@ -198,6 +200,8 @@ public class CrockerClockFrame implements ActionListener{
 						time = 0;
 						Isclockrunning = false;
 						ClockDown.cancel(); // stops clock
+						AudioPlayer();
+
 					} else {
 
 						if (CrockerControlFrame.GetTimeInAddBox() != 0) {
@@ -293,6 +297,32 @@ public class CrockerClockFrame implements ActionListener{
 		}
 
 		
+	}
+
+	@SuppressWarnings("ConvertToTryWithResources")
+	public static void AudioPlayer() {
+		try {
+			// Specify the audio file path
+			File audioFile = new File("Drum Roll Ending Celebration Sound Effect ProSounds.wav"); //Finds the Audio File
+
+			// Set up the audio stream and open the audio clip
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioStream);
+
+			// Play the audio clip
+			clip.start();
+
+			// Wait until the audio finish playing
+			Thread.sleep(clip.getMicrosecondLength() / 1000);
+
+			// closes the audio
+			clip.close();
+			audioStream.close();
+
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 

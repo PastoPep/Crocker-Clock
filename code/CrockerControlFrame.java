@@ -193,6 +193,7 @@ public class CrockerControlFrame implements ActionListener{
         setTimeField.setFont(new Font("Arial", Font.BOLD, 25));
         setTimeField.setBackground(new Color(166,166,166));
         setTimeField.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+        setTimeField.setHorizontalAlignment(JTextField.CENTER);
         SetTimeButtonPanel.add(setTimeField);
         TimeBox.add(SetTimeButtonPanel);
 
@@ -210,6 +211,7 @@ public class CrockerControlFrame implements ActionListener{
         AddTextField.setFont(new Font("Arial", Font.BOLD, 25));
         AddTextField.setPreferredSize(new Dimension(5,20));
         AddTextField.setBackground(new Color(166,166,166));
+        AddTextField.setHorizontalAlignment(JTextField.CENTER);
         AddTextField.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
         //AddTimeBox.add(AddTextField,BorderLayout.CENTER);
         AddButtonPanel.add(AddTextField,BorderLayout.CENTER);
@@ -239,6 +241,7 @@ public class CrockerControlFrame implements ActionListener{
         setSpeedField.setPreferredSize(new Dimension(3,20));
         setSpeedField.setBackground(new Color(166,166,166));
         setSpeedField.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+        setSpeedField.setHorizontalAlignment(JTextField.CENTER);
         setSpeedTextFieldPanel.add(setSpeedField);
         setSpeedFieldTwo = new RoundJTextField(4); //creates the text field where the user enters the SPEED
         setSpeedFieldTwo.setText("1");
@@ -247,6 +250,7 @@ public class CrockerControlFrame implements ActionListener{
         setSpeedFieldTwo.setPreferredSize(new Dimension(3,20));
         setSpeedFieldTwo.setBackground(new Color(166,166,166));
         setSpeedFieldTwo.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+        setSpeedFieldTwo.setHorizontalAlignment(JTextField.CENTER);
         setSpeedTextFieldPanel.add(setSpeedFieldTwo);
         SetSpeedButtonPanel.add(setSpeedTextFieldPanel);
         TimeBox.add(SetSpeedButtonPanel);

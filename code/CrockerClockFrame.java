@@ -1,6 +1,8 @@
 
 //Clock for Mr. Crocker
 import java.awt.*;
+import java.io.IOException;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
@@ -10,6 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import javax.swing.SwingConstants;
+
 // Driver Class
 public class CrockerClockFrame implements ActionListener{
 
@@ -23,8 +28,7 @@ public class CrockerClockFrame implements ActionListener{
 	private static boolean IsStopped = true; //boolean used to check if the clock is in a stopped state
 
 	public static Timer ClockDown;//creates a universal countdown
-	
-
+    Font font;
 	JFrame frame;
 
 	private static JLabel clocky;
@@ -33,6 +37,14 @@ public class CrockerClockFrame implements ActionListener{
 
 	// Create a new JFrame
 	public CrockerClockFrame() {
+	    // FONT IMPLEMENTATION
+		try {
+            File FontFile = new File("Anton-Regular.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, FontFile);
+        } catch(Exception e) {
+    
+        }
+
         ClockDown = updateClocky();
             
 
@@ -41,25 +53,26 @@ public class CrockerClockFrame implements ActionListener{
 
 
 		// Creates and formats Start Button
-        JButton StartButton = new RoundedButton("Start");
+        JButton StartButton = new RoundedButton("START");
         StartButton.addActionListener(this);
-        StartButton.setFont(new Font("Arial", Font.BOLD, 40));
+        // StartButton.setFont(new Font("Arial", Font.BOLD, 40));
+		StartButton.setFont(font.deriveFont(Font.PLAIN, 40f));
 		StartButton.setForeground(Color.WHITE);
 		StartButton.setBackground(new Color(154, 255, 156));
 		StartButton.setPreferredSize(new Dimension(200, 70));
 
 		// Creates and formats Stop Button
-        JButton StawpButton = new RoundedButton("Stop");//add buttons
+        JButton StawpButton = new RoundedButton("STOP");//add buttons
         StawpButton.addActionListener(this);
-        StawpButton.setFont(new Font("Arial", Font.BOLD, 40));
+        StawpButton.setFont(font.deriveFont(Font.PLAIN, 40f));
 		StawpButton.setBackground(new Color(255, 129, 101));
 		StawpButton.setForeground(Color.WHITE);
 		StawpButton.setPreferredSize(new Dimension(200, 70)); 
 
         // Creates and formats Reset Button
-        JButton ResetButtons = new RoundedButton("Reset");//add buttons
+        JButton ResetButtons = new RoundedButton("RESET");//add buttons
         ResetButtons.addActionListener(this);
-        ResetButtons.setFont(new Font("Arial", Font.BOLD, 40));
+        ResetButtons.setFont(font.deriveFont(Font.PLAIN, 40f));
 		ResetButtons.setBackground(new Color(166, 166, 166));
 		ResetButtons.setForeground(Color.WHITE);
 		ResetButtons.setPreferredSize(new Dimension(200, 70));
@@ -68,8 +81,13 @@ public class CrockerClockFrame implements ActionListener{
 
 		// Creates and formats the text for the Display Timer
         clocky = new JLabel();
-        clocky.setFont(new Font("Arial", Font.BOLD, 160));
+
+        // clocky.setFont(new Font("Arial", Font.BOLD, 160));
+		clocky.setText("00:00:00");
+		clocky.setFont(font.deriveFont(Font.PLAIN, 140f));
 		clocky.setForeground(Color.BLACK);
+		clocky.setVerticalAlignment(SwingConstants.CENTER);
+
 
         // Creates and formats the frame for the Display Timer
         ClockFrame = new RoundedPanel();
@@ -125,7 +143,7 @@ public class CrockerClockFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) { //start button to start countdown
 		
 		
-		if(e.getActionCommand().equals("Start")){
+		if(e.getActionCommand().equals("START")){
 			
 
 
@@ -153,12 +171,12 @@ public class CrockerClockFrame implements ActionListener{
 
         throw new UnsupportedOperationException("Not supported yet.");
 			
-        } else if (e.getActionCommand().equals("Stop")) { //when stop button, calls cancel on the tmer
+        } else if (e.getActionCommand().equals("STOP")) { //when stop button, calls cancel on the tmer
             ClockDown.cancel();
 			CrockerControlFrame.StopClock();
             IsStopped = true;
 
-        } else if (e.getActionCommand().equals("Reset")) {//when reset button, calls cancel on timer and resets to og time
+        } else if (e.getActionCommand().equals("RESET")) {//when reset button, calls cancel on timer and resets to og time
             time = CrockerControlFrame.GetTimeInBox();//updates the timer based on the crocker control panel
             OGtime = time;
             ClockDown.cancel();

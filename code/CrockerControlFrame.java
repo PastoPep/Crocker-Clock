@@ -1,7 +1,3 @@
-
-
-
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,50 +14,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-
-
-
-
-
-
-
 public class CrockerControlFrame implements ActionListener{
 
-
-
-
-
-
-
-
     private static String TimeInBox = null;
-
-
-
-
-
-
-
 
     private static String SpeedInTextBox = null;
     private static int speed = 1;
 
-
-
-
-
-
-
-
     private static String TimeInAddBox = "0";
     static int returnTime = 0;
-
-
-
-
-
-
-
 
     JFrame frame;
     JPanel panel;
@@ -74,12 +35,6 @@ public class CrockerControlFrame implements ActionListener{
     JLabel TimeTextBox;
 
 
-
-
-
-
-
-
     JLabel TimeTextBox2;
     JTextField setTimeField;
     JTextField setSpeedField;
@@ -88,24 +43,10 @@ public class CrockerControlFrame implements ActionListener{
     JTextField SetTextField;
     static JTextField AddTextField;
 
-
-
-
-
-
-
-
     //CLOCK FRAME RELATED
     JPanel Clockpanel;
     Border blackline;
     static JLabel clocky;
-
-
-
-
-
-
-
 
     //Clock Related
     private static int time = 0;
@@ -118,45 +59,11 @@ public class CrockerControlFrame implements ActionListener{
     Font font;
 
 
-
-
-
-
-
-
-   
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // public CrockerControlFrame() {
 
 
 
-
-
-
-
-
     // frame = new JFrame("Crocker's Control"); //Application Control Window
-
-
-
-
-
 
 
 
@@ -168,19 +75,9 @@ public class CrockerControlFrame implements ActionListener{
 
 
 
-
-
-
-
     // /*
     //  *  using for Seperation of code
     //  */ //SET TIME
-
-
-
-
-
-
 
 
     // TimeBox = new JPanel(); //Panel that contains the Set Time
@@ -190,20 +87,9 @@ public class CrockerControlFrame implements ActionListener{
 
 
 
-
-
-
-
-
     // JLabel AddTimeTextBox;
     // JTextField SetTextField;
     // static final JTextField AddTextField;
-
-
-
-
-
-
 
 
     public CrockerControlFrame() {
@@ -217,27 +103,8 @@ public class CrockerControlFrame implements ActionListener{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         ClockDown = updateClocky();
         frame = new JFrame("Crocker's Control"); //Application Control Window
-
-
-
-
-
-
 
 
         // MAIN FRAME
@@ -245,29 +112,6 @@ public class CrockerControlFrame implements ActionListener{
         panel.setBorder(BorderFactory.createEmptyBorder(50,0,0,0));
         panel.setLayout(new GridLayout(0,1));
         frame.add(panel,BorderLayout.CENTER);//add main frame/panel to the frame
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // CLOCK FRAME
         Clockpanel = new JPanel(); //Panel that contains the real clock
@@ -285,36 +129,8 @@ public class CrockerControlFrame implements ActionListener{
         clocky.setBackground(new Color(56, 182, 255));
 
 
-
-
-
-
-
-
         clocky.setText(updateClockLabel()); // updates text
         Clockpanel.add(clocky,BorderLayout.CENTER); // add to the panel  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         // CONTROL PANEL
@@ -322,11 +138,6 @@ public class CrockerControlFrame implements ActionListener{
         TimeBox.setBorder(BorderFactory.createEmptyBorder(30,20,50,20));
         TimeBox.setLayout(new GridLayout(2,2,30,50));
         panel.add(TimeBox,BorderLayout.CENTER);
-
-
-
-
-
 
 
 
@@ -356,32 +167,10 @@ public class CrockerControlFrame implements ActionListener{
 
 
 
-
-
-
-
-
-
-
-       
-
-
-
-
-
-
-
-
         // SET TIME - TEXT LABEL
         // TimeTextBox = new JLabel();
         // TimeTextBox.setText("Set a Time");//Adds a to-do label
         // TimeBox.add(TimeTextBox,BorderLayout.WEST);
-
-
-
-
-
-
 
 
         // BUTTON (SET THE ACTUAL TIME)
@@ -395,19 +184,7 @@ public class CrockerControlFrame implements ActionListener{
 
 
 
-
-
-
-
-
         // SET TIME (TEXT BOX)
-
-
-
-
-
-
-
 
         setTimeField = new RoundJTextField(9); //creates the text field where the user enters the time
         setTimeField.setPreferredSize(new Dimension(5,20));
@@ -418,21 +195,6 @@ public class CrockerControlFrame implements ActionListener{
         setTimeField.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
         SetTimeButtonPanel.add(setTimeField);
         TimeBox.add(SetTimeButtonPanel);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         JButton AddButton = new RoundedButton("ADD TIME"); //creates a button to set the time
         AddButton.addActionListener(this);
@@ -452,25 +214,11 @@ public class CrockerControlFrame implements ActionListener{
         //AddTimeBox.add(AddTextField,BorderLayout.CENTER);
         AddButtonPanel.add(AddTextField,BorderLayout.CENTER);
         TimeBox.add(AddButtonPanel);
-   
-
-
-
-
-
-
-
 
         // SET SPEED - TEXT LABEL
         // TimeTextBox2 = new JLabel();
         // TimeTextBox2.setText("Set the speed (1 is default)");//Adds a second label
         // TimeBox.add(TimeTextBox2,BorderLayout.CENTER); // Adds the SECOND label after the field
-
-
-
-
-
-
 
 
         // BUTTON (SET THE SPEED)
@@ -481,12 +229,6 @@ public class CrockerControlFrame implements ActionListener{
         SetSpeedButton.setBackground(new Color(56, 182, 255));
         SetSpeedButton.setPreferredSize(new Dimension(200, 70));
         SetSpeedButtonPanel.add(SetSpeedButton);//adds the buttons
-
-
-
-
-
-
 
 
         // TEXT BOX (INPUT)
@@ -509,31 +251,6 @@ public class CrockerControlFrame implements ActionListener{
         SetSpeedButtonPanel.add(setSpeedTextFieldPanel);
         TimeBox.add(SetSpeedButtonPanel);
    
-   
-
-
-
-
-
-
-
-
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // CONTROL APP. FRAME
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -542,31 +259,13 @@ public class CrockerControlFrame implements ActionListener{
         frame.setVisible(true);
 
 
-
-
-
-
-
-
     // SetTextField = new JTextField(1); //creates the text field where the user enters the time
     // TimeBox.add(SetTextField,BorderLayout.CENTER);
-
-
-
-
-
-
 
 
     /* //SET TIME
      *  using for Seperation of code
      */ //ADD TIME
-
-
-
-
-
-
 
 
     //  AddTimeBox = new JPanel(); //Panel that contains the Set Time
@@ -575,149 +274,41 @@ public class CrockerControlFrame implements ActionListener{
     //  //panel.add(AddTimeBox,BorderLayout.CENTER);
     //  TimeBox.add(AddTimeBox,BorderLayout.CENTER);
 
-
-
-
-
-
-
-
  
     //  AddTimeTextBox = new JLabel();
     //  AddTimeTextBox.setText("Add Time to the timer");//puts word down
     //  //AddTimeBox.add(AddTimeTextBox,BorderLayout.CENTER);
     //  TimeBox.add(AddTimeTextBox,BorderLayout.CENTER);
  
-   
-
-
-
-
-
-
 
 
     /* //ADD TIME
      *  using for Seperation of code
      */ //Buttons
-       
-
-
-
-
-
-
 
 
     TimeInBox = setTimeField.getText();
     SpeedInTextBox = setTimeField.getText();
 
-
-
-
-
-
-
-
     // TimeInBox = SetTextField.getText();
     TimeInAddBox = AddTextField.getText();
 
-
-
-
-
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static void main(String[] args) {
-
-
-
-
-
-
-
-
        
         new CrockerClockFrame();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    
         new CrockerControlFrame();
 
-
-
-
-
-
-
-
         //System.out.println(TimeInBox);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
 
 
     public static int GetTimeInBox() {//getter to get TimeInBox Value
         return Integer.parseInt(TimeInBox);
     }
-
-
-
-
-
-
 
 
     public static int GetSpeedInTextBox() {//getter to get TimeInTargetBox Value
@@ -726,31 +317,13 @@ public class CrockerControlFrame implements ActionListener{
 
 
 
-
-
-
-
-
     public static void resetSpeed() {
         speed = 1;
     }
 
-
-
-
-
-
-
-
     public static int getSpeed() {
         return speed;
     }
-
-
-
-
-
-
 
 
     public void SetTimeInBox() {//setter to get TimeInBox Value
@@ -758,21 +331,9 @@ public class CrockerControlFrame implements ActionListener{
     }
 
 
-
-
-
-
-
-
     public void SetSpeedInBox() {//setter to get TimeInTargetBox Value
         SpeedInTextBox = setSpeedField.getText();
     }
-
-
-
-
-
-
 
 
     public static int GetTimeInAddBox() {//getter to get TimeInBox Value
@@ -787,21 +348,7 @@ public class CrockerControlFrame implements ActionListener{
         TimeInAddBox = "0";
     }
 
-
-
-
-
-
-
-
     public static String updateClockLabel() {
-
-
-
-
-
-
-
 
         timeInSecond = time%60; //time in seconds
         timeInRealMinute = time/60; //time in minutes
@@ -821,24 +368,10 @@ public class CrockerControlFrame implements ActionListener{
                 @Override
                 public void run() {
 
-
-
-
-
-
-
-
                     if(time <=-1) {
                         time = 0;
                         ClockDown.cancel(); // stops clock
                     } else {
-
-
-
-
-
-
-
 
                         if (CrockerControlFrame.GetTimeInAddBox() != 0) {
                             time += CrockerControlFrame.GetTimeInAddBox();
@@ -846,32 +379,12 @@ public class CrockerControlFrame implements ActionListener{
                         }
 
 
-
-
-
-
-
-
                         timeInSecond = time%60; //time in seconds
                         timeInRealMinute = time/60; //time in minutes
                         timeInHour = timeInRealMinute/60;  //time in hours
                         timeInDisplayedMinute = timeInRealMinute%60; //time in minutes, used for display in clock
 
-
-
-
-
-
-
-
                         clocky.setText(updateClockLabel());//puts word down
-
-
-
-
-
-
-
 
                         time--;
                     }
@@ -879,22 +392,9 @@ public class CrockerControlFrame implements ActionListener{
                 }
             };
 
-
-
-
-
-
-
-
             ClockDown.schedule(timerTaskObj, 0, 1000/(CrockerControlFrame.getSpeed()));//delays in ms
             return ClockDown;
         }
-
-
-
-
-
-
 
 
         public static void StartClock(int times) { //starts clock from ClockFrame used for when startCountdown new time
@@ -907,12 +407,6 @@ public class CrockerControlFrame implements ActionListener{
         public static void StopClock() {
             ClockDown.cancel();
         }
-
-
-
-
-
-
 
 
         @Override
@@ -936,12 +430,6 @@ public class CrockerControlFrame implements ActionListener{
          }
 
 
-
-
-
-
-
-
          // Subclass to allow for rounded panels with rounded borders
     public class RoundedPanel extends JPanel {
         @Override
@@ -953,86 +441,29 @@ public class CrockerControlFrame implements ActionListener{
             g2.dispose();
         }
 
-
-
-
-
-
-
-
         protected void paintBorder(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-
-
-
-
-
-
 
             g2.setStroke(new BasicStroke(2));
             g2.setColor(new Color(0,0,0));
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 51, 51);  // Draw the border with rounded corners
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             g2.dispose();
         }
     }
 
-
-
-
-
-
-
-
     public class RoundedButton extends JButton {
-
-
-
-
-
-
-
 
         public RoundedButton(String text) {
             super(text);
             setContentAreaFilled(false);  // Turn off the default painting
         }
 
-
-
-
-
-
-
-
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-
-
-
-
-
-
 
             // Button background
             g2.setColor(getBackground());
@@ -1044,94 +475,30 @@ public class CrockerControlFrame implements ActionListener{
         }
 
 
-
-
-
-
-
-
         @Override
         protected void paintBorder(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-
-
-
-
-
-
 
             g2.setStroke(new BasicStroke(2));
             g2.setColor(new Color(0,0,0));
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 51, 51);  // Draw the border with rounded corners
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             g2.dispose();
-        }
-
-
-
-
-
-
-
-
-       
+        }   
     }
 
-
-
-
-
-
-
-
     public class RoundedLabel extends JLabel {
-
-
-
-
-
-
-
 
         public RoundedLabel() {
             super();
         }
 
-
-
-
-
-
-
-
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-
-
-
-
-
-
 
             // Button background
             g2.setColor(getBackground());
@@ -1142,54 +509,17 @@ public class CrockerControlFrame implements ActionListener{
             g2.dispose();
         }
 
-
-
-
-
-
-
-
         @Override
         protected void paintBorder(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 
-
-
-
-
-
-
             g2.setStroke(new BasicStroke(2));
             g2.setColor(new Color(0,0,0));
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 51, 51);  // Draw the border with rounded corners
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             g2.dispose();
         }
-
-
-
-
-
-
-
-
        
     }
     public class RoundJTextField extends JTextField {
@@ -1214,49 +544,4 @@ public class CrockerControlFrame implements ActionListener{
              return shape.contains(x, y);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
